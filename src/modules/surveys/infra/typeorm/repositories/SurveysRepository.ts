@@ -12,6 +12,12 @@ export class SurveysRepository implements ISurveysRepository {
     this.ormRepository = getRepository(Survey);
   }
 
+  public async findById(id: string): Promise<Survey | undefined> {
+    const survey = this.ormRepository.findOne(id);
+
+    return survey;
+  }
+
   public async findAllSurveys(): Promise<Survey[]> {
     const surveys = this.ormRepository.find();
 

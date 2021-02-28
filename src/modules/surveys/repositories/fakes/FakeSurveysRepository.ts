@@ -12,6 +12,12 @@ export class FakeSurveysRepository implements ISurveysRepository {
     return this.surveys;
   }
 
+  public async findById(id: string): Promise<Survey | undefined> {
+    const findSurvey = this.surveys.find(survey => survey.id === id);
+
+    return findSurvey;
+  }
+
   public async create({
     title,
     description,
