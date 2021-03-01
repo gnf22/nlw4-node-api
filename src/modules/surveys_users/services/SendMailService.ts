@@ -50,8 +50,11 @@ export class SendMailService {
       throw new AppError('Survey does not exists', 404);
     }
 
-    const surveyUserAlreadyExists = await this.surveysUsersRepository.findByUserId(
-      user.id,
+    const surveyUserAlreadyExists = await this.surveysUsersRepository.findByUserAndSurveyId(
+      {
+        user_id: user.id,
+        survey_id: survey.id,
+      },
     );
 
     const npsMailTemplate = path.resolve(
@@ -66,11 +69,13 @@ export class SendMailService {
       name: user.name,
       title: survey.title,
       description: survey.description,
-      user_id: user.id,
+      id: '',
       link: process.env.URL_MAIL || 'http://localhost:3333/answers',
     };
 
     if (surveyUserAlreadyExists) {
+      variables.id = surveyUserAlreadyExists.id;
+
       await this.mailProvider.sendMail({
         to: {
           name: user.name,
@@ -90,6 +95,8 @@ export class SendMailService {
       user_id: user.id,
       survey_id,
     });
+
+    variables.id = surveyUser.id;
 
     await this.mailProvider.sendMail({
       to: {
