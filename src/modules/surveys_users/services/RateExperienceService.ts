@@ -6,7 +6,7 @@ import { ISurveysUsersRepository } from '../repositories/ISurveysUsersRepository
 
 interface IRequest {
   u: string;
-  value: string;
+  value: number;
 }
 
 @injectable()
@@ -19,16 +19,16 @@ export class RateExperienceService {
   }
 
   public async execute({ u, value }: IRequest): Promise<SurveyUser> {
-    const survey_user = await this.surveysUsersRepository.findById(u);
+    const surveyUser = await this.surveysUsersRepository.findById(u);
 
-    if (!survey_user) {
+    if (!surveyUser) {
       throw new AppError('Survey User does not exists!', 404);
     }
 
-    survey_user.value = Number(value);
+    surveyUser.value = value;
 
-    await this.surveysUsersRepository.save(survey_user);
+    await this.surveysUsersRepository.save(surveyUser);
 
-    return survey_user;
+    return surveyUser;
   }
 }

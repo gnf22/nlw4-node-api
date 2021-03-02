@@ -14,9 +14,9 @@ export class SurveysUsersRepository implements ISurveysUsersRepository {
   }
 
   public async findById(id: string): Promise<SurveyUser | undefined> {
-    const survey_user = await this.ormRepository.findOne(id);
+    const surveyUser = await this.ormRepository.findOne(id);
 
-    return survey_user;
+    return surveyUser;
   }
 
   public async findBySurveyId(survey_id: string): Promise<SurveyUser[]> {
@@ -31,23 +31,23 @@ export class SurveysUsersRepository implements ISurveysUsersRepository {
     user_id,
     survey_id,
   }: IFindSurveysUsersDTO): Promise<SurveyUser | undefined> {
-    const survey_user = await this.ormRepository.findOne({
-      where: { user_id, survey_id, value: null },
+    const surveyUser = await this.ormRepository.findOne({
+      where: { user_id, survey_id },
       relations: ['user', 'survey'],
     });
 
-    return survey_user;
+    return surveyUser;
   }
 
   public async create({
     user_id,
     survey_id,
   }: ICreateSurveysUsersDTO): Promise<SurveyUser> {
-    const survey_user = this.ormRepository.create({ user_id, survey_id });
+    const surveyUser = this.ormRepository.create({ user_id, survey_id });
 
-    await this.ormRepository.save(survey_user);
+    await this.ormRepository.save(surveyUser);
 
-    return survey_user;
+    return surveyUser;
   }
 
   public async save(surveyUser: SurveyUser): Promise<SurveyUser> {

@@ -12,7 +12,7 @@ export class RateExperienceController {
     const rateExperience = container.resolve(RateExperienceService);
 
     const rate = await rateExperience.execute({
-      value,
+      value: Number(value),
       u: String(u),
     });
 
